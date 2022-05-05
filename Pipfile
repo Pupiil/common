@@ -7,6 +7,7 @@ name = "pypi"
 pyopenssl = "*"
 cryptography = "*"
 netifaces = "*"
+cffi = "==1.15.0"
 
 [dev-packages]
 twine = "*"
