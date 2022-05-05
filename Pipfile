@@ -6,13 +6,14 @@ name = "pypi"
 [packages]
 pyopenssl = "*"
 cryptography = "*"
+netifaces = "*"
+
+[dev-packages]
 twine = "*"
 build = "*"
 pytest = "*"
 auto-changelog = "*"
 markupsafe = "==2.0.1"
-
-[dev-packages]
 
 [requires]
 python_version = "3.10"

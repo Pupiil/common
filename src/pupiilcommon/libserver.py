@@ -10,7 +10,13 @@ import struct
 import csv
 import secrets
 
-from common.Certificate import Certificate
+from . import Certificate as cert
+
+request_search = {
+    "Example 1": "Follow the white rabbit. \U0001f430",
+    "Example 2": "In the caves beneath the Misty Mountains. \U0001f48d",
+    "\U0001f436": "\U0001f43e Playing ball! \U0001f3d0",
+}
 
 
 class Message:
@@ -26,7 +32,7 @@ class Message:
         self.response_created = False
         self._registered_addresses = []
         self._cert_gen_random_data = self._get_cert_gen_csv_data()
-        self._certificate_aux = Certificate(self._get_key_response_from_ckms())
+        self._certificate_aux = cert.Certificate(self._get_key_response_from_ckms())
 
     def _get_key_response_from_ckms(self) -> dict:
 

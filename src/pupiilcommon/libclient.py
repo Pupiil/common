@@ -5,7 +5,7 @@ import json
 import io
 import struct
 
-from common.Certificate import Certificate
+from . import Certificate as cert
 
 
 class Message:
@@ -20,7 +20,7 @@ class Message:
         self._jsonheader_len = None
         self.jsonheader = None
         self.response = None
-        self._certificate = Certificate(self._get_key_response_from_ckms())
+        self._certificate = cert.Certificate(self._get_key_response_from_ckms())
 
     def _get_key_response_from_ckms(self) -> dict:
 
