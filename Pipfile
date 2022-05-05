@@ -8,6 +8,9 @@ pyopenssl = "*"
 cryptography = "*"
 twine = "*"
 build = "*"
+pytest = "*"
+auto-changelog = "*"
+markupsafe = "==2.0.1"
 
 [dev-packages]
 
