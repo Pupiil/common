@@ -3,7 +3,7 @@
 ## Upload build to PyPi
 archive:
 	@ python3 setup.py test_upload
-	# @ python3 -m twine upload --repository testpypi dist/* --verbose
+	@ # @ python3 -m twine upload --repository testpypi dist/* --verbose
 
 ## Install the package locally
 ## ONLY AFTER RUNNING `make build`
@@ -13,11 +13,12 @@ local-install:
 
 ## Build the package
 build:
-	@ python3 -m build
+	# @ python3 -m build
+	@ python3 setup.py sdist bdist_wheel --universal
 
 ## Clean directory of previous build
 clean:
-	@ rm -rf dist/ src/*.egg-info
+	@ rm -rf dist/ build/ src/*.egg-info
 
 # TESTING
 
