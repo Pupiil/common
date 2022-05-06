@@ -22,7 +22,7 @@ import json
 import shutil
 
 # Setup variables. Change as needed
-NAME = "mapillary"  
+NAME = "mapillary"
 VERSION = "1.0.7"
 AUTHOR = "Christopher Beddow"
 AUTHOR_EMAIL = "support@mapillary.zendesk.com"

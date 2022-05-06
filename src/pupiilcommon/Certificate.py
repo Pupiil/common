@@ -93,12 +93,10 @@ class Certificate(metaclass=SingletonMeta):
         cert.sign(k, "sha512")
 
         with open(CERT_FILE, "wt") as f:
-            f.write(crypto.dump_certificate(
-                crypto.FILETYPE_PEM, cert).decode("utf-8"))
+            f.write(crypto.dump_certificate(crypto.FILETYPE_PEM, cert).decode("utf-8"))
 
         with open(KEY_FILE, "wt") as f:
-            f.write(crypto.dump_privatekey(
-                crypto.FILETYPE_PEM, k).decode("utf-8"))
+            f.write(crypto.dump_privatekey(crypto.FILETYPE_PEM, k).decode("utf-8"))
 
     def hash_file(self, filename):
         """
