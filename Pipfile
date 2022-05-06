@@ -4,9 +4,9 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-pyopenssl = "*"
-cryptography = "*"
-netifaces = "*"
+pyopenssl = "==22.0.0"
+cryptography = "==37.0.2"
+netifaces = "==0.11.0"
 cffi = "==1.15.0"
 
 [dev-packages]

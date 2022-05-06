@@ -1,5 +1,7 @@
 """
-common.__init__
+pupiil_common.__init__
+
+- License: MIT LICENSE
 """
 
 from . import Certificate
