@@ -2,7 +2,8 @@
 
 ## Upload build to PyPi
 archive:
-	@ python3 -m twine upload --repository testpypi dist/* --verbose
+	@ python3 setup.py test_upload
+	# @ python3 -m twine upload --repository testpypi dist/* --verbose
 
 ## Install the package locally
 ## ONLY AFTER RUNNING `make build`
