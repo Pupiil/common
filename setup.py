@@ -21,7 +21,7 @@ import shutil
 
 # Setup variables. Change as needed
 NAME = "pupiilcommon"
-VERSION = "0.0.9"
+VERSION = "0.0.10"
 AUTHOR = "Saif Ul Islam"
 AUTHOR_EMAIL = "saifulislam84210@gmail.com"
 LICENSE = "MIT"
@@ -184,6 +184,9 @@ setuptools.setup(
     packages=setuptools.find_packages(where="src"),
     # # Specify the package directory
     package_dir=PACKAGE_DIR,
+    # # If any package contains *.txt, *.csv or *.rst files (other than *.py)
+    # # include them:
+    package_data={NAME: ['data/*.csv']},
     # # A string or list of strings specifying what other distributions need to be installed
     # # when this one is
     install_requires=locked_requirements("default"),
