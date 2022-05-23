@@ -9,6 +9,7 @@ import os
 import struct
 import csv
 import secrets
+import pathlib
 
 from . import Certificate as cert
 
@@ -54,7 +55,7 @@ class Message:
 
         csv_data = dict(email_address=[], common_name=[], country_name=[])
 
-        with open("./data/cert_gen_data.csv") as csv_file:
+        with open(f"{str(pathlib.Path().resolve())}/data/cert_gen_data.csv") as csv_file:
 
             csv_reader = csv.reader(csv_file, delimiter=",")
             line_count = 0
