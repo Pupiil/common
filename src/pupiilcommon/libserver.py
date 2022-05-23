@@ -36,8 +36,8 @@ class Message:
 
     def _get_key_response_from_ckms(self) -> dict:
 
-        HOST = "127.0.0.1"  # The server's hostname or IP address
-        PORT = 40008  # The port used by the CKMS
+        HOST = "127.52.0.2"  # The server's hostname or IP address
+        PORT = 6000  # The port used by the CKMS
 
         keys = {}
 
@@ -62,7 +62,7 @@ class Message:
             for row in csv_reader:
 
                 if line_count == 0:
-                    print(f'Column names are {", ".join(row)}')
+                    print(f'[LIBSERVER::MESSAGE::_GET_CERT_GEN_CSV_DATA] Column names are {", ".join(row)}')
                 else:
                     csv_data["email_address"].append(row[0])
                     csv_data["common_name"].append(row[1])
@@ -70,7 +70,7 @@ class Message:
 
                 line_count += 1
 
-            print(f"Processed {line_count} lines.")
+            print(f"[LIBSERVER::MESSAGE::_GET_CERT_GEN_CSV_DATA] Processed {line_count} lines.")
 
         return csv_data
 
@@ -101,7 +101,7 @@ class Message:
 
     def _write(self):
         if self._send_buffer:
-            print("sending", repr(self._send_buffer), "to", self.addr)
+            print("[LIBSERVER::MESSAGE::_WRITE] Sending", repr(self._send_buffer), "to", self.addr)
             try:
                 # Should be ready to write
                 sent = self.sock.send(self._send_buffer)
@@ -248,12 +248,12 @@ class Message:
         self._write()
 
     def close(self):
-        print("closing connection to", self.addr)
+        print("[LIB_SERVER] Closing connection to", self.addr)
         try:
             self.selector.unregister(self.sock)
         except Exception as e:
             print(
-                "error: selector.unregister() exception for",
+                "[LIB_SERVER] Error: selector.unregister() exception for",
                 f"{self.addr}: {repr(e)}",
             )
 
@@ -261,7 +261,7 @@ class Message:
             self.sock.close()
         except OSError as e:
             print(
-                "error: socket.close() exception for",
+                "[LIB_SERVER] Error: socket.close() exception for",
                 f"{self.addr}: {repr(e)}",
             )
         finally:
@@ -297,12 +297,12 @@ class Message:
         if self.jsonheader["content-type"] == "text/json":
             encoding = self.jsonheader["content-encoding"]
             self.request = self._json_decode(data, encoding)
-            print("received request", repr(self.request), "from", self.addr)
+            print("[LIB_SERVER] Received request", repr(self.request), "from", self.addr)
         else:
             # Binary or unknown content-type
             self.request = data
             print(
-                f'received {self.jsonheader["content-type"]} request from',
+                f'[LIB_SERVER] Received {self.jsonheader["content-type"]} request from',
                 self.addr,
             )
         # Set selector to listen for write events, we're done reading.

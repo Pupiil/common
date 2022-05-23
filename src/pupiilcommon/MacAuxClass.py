@@ -25,8 +25,8 @@ class MacAux:
         remote_host = "www.python.org"
         try:
             print(
-                "IP address of %s: %s"
+                "[MAC_AUX] IP address of %s: %s"
                 % (remote_host, socket.gethostbyname(remote_host))
             )
         except socket.error as err_msg:
-            print("%s: %s" % (remote_host, err_msg))
+            print("[MAC_AUX] %s: %s" % (remote_host, err_msg))
