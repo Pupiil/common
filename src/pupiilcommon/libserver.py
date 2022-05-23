@@ -55,7 +55,7 @@ class Message:
 
         csv_data = dict(email_address=[], common_name=[], country_name=[])
 
-        with open(f"{str(pathlib.Path().resolve())}/data/cert_gen_data.csv") as csv_file:
+        with open("cert_gen_data.csv") as csv_file:
 
             csv_reader = csv.reader(csv_file, delimiter=",")
             line_count = 0
