@@ -6,8 +6,12 @@ pupiil_common.__init__
 
 from . import Certificate
 
-from . import libclient
+from . import LibClient
 
-from . import libserver
+from . import LibServer
+
+from . import LibRecognition
 
 from . import MacAuxClass
+
+from . import EncodeFaces

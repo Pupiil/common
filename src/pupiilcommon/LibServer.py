@@ -1,15 +1,18 @@
 #!/usr/bin/env python3
 
-import socket
-import sys
+import face_recognition
 import selectors
-import json
-import io
-import os
-import struct
-import csv
 import secrets
 import pathlib
+import pickle
+import socket
+import struct
+import json
+import sys
+import csv
+import cv2
+import io
+import os
 
 from . import Certificate as cert
 
@@ -34,6 +37,8 @@ class Message:
         self._registered_addresses = []
         self._cert_gen_random_data = self._get_cert_gen_csv_data()
         self._certificate_aux = cert.Certificate(self._get_key_response_from_ckms())
+        self.detector = cv2.CascadeClassifier(f"{pathlib.Path(__file__).parent.absolute()}/data/HaarCascade.xml")
+        self.encodings = pickle.loads(open(f"{pathlib.Path(__file__).parent.absolute()}/data/PREncodings.pkl", "rb").read())
 
     def _get_key_response_from_ckms(self) -> dict:
 
@@ -51,11 +56,68 @@ class Message:
 
         return dict(_signing_key=keys[:16], _encryption_key=keys[17:])
 
+    def _detect_faces(self, frame):
+        # convert the input frame from (1) BGR to grayscale (for face
+        # detection) and (2) from BGR to RGB (for face recognition)
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+        # detect faces in the grayscale frame
+        rects = self.detector.detectMultiScale(
+            gray,
+            scaleFactor=1.1,
+            minNeighbors=5,
+            minSize=(30, 30),
+            flags=cv2.CASCADE_SCALE_IMAGE,
+        )
+
+        # OpenCV returns bounding box coordinates in (x, y, w, h) order
+        # but we need them in (top, right, bottom, left) order, so we
+        # need to do a bit of reordering
+        boxes = [(y, x + w, y + h, x) for (x, y, w, h) in rects]
+
+        # compute the facial embeddings for each face bounding box
+        encodings = face_recognition.face_encodings(rgb, boxes)
+        names = []
+
+        # loop over the facial embeddings
+        for encoding in encodings:
+            # attempt to match each face in the input image to our known
+            # encodings
+            matches = face_recognition.compare_faces(
+                self.encodings["encodings"], encoding, tolerance=0.46
+            )
+            name = "Unknown"
+
+            # check to see if we have found a match
+            if True in matches:
+                # find the indexes of all matched faces then initialize a
+                # dictionary to count the total number of times each face
+                # was matched
+                matchedIdxs = [i for (i, b) in enumerate(matches) if b]
+                counts = {}
+
+                # loop over the matched indexes and maintain a count for
+                # each recognized face face
+                for i in matchedIdxs:
+                    name = self.encodings["names"][i]
+                    counts[name] = counts.get(name, 0) + 1
+
+                # determine the recognized face with the largest number
+                # of votes (note: in the event of an unlikely tie Python
+                # will select first entry in the dictionary)
+                name = max(counts, key=counts.get)
+
+            # update the list of names
+            names.append(name)
+
+        return boxes, names
+
     def _get_cert_gen_csv_data(self):
 
         csv_data = dict(email_address=[], common_name=[], country_name=[])
 
-        with open("cert_gen_data.csv") as csv_file:
+        with open(f"{pathlib.Path(__file__).parent.absolute()}/data/CertGenData.csv") as csv_file:
 
             csv_reader = csv.reader(csv_file, delimiter=",")
             line_count = 0
