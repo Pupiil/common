@@ -4,6 +4,9 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+imutils = "==0.5.4"
+face-recognition = "==1.3.0"
+opencv-python = "==4.5.5.64"
 pyopenssl = "==22.0.0"
 cryptography = "==37.0.2"
 netifaces = "==0.11.0"

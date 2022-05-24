@@ -186,7 +186,7 @@ setuptools.setup(
     package_dir=PACKAGE_DIR,
     # # If any package contains *.txt, *.csv or *.rst files (other than *.py)
     # # include them:
-    package_data={NAME: ['*.csv']},
+    package_data={NAME: ['data/*.csv', 'data/*.pickle', 'data/*.xml', 'data/*.pkl']},
     # # A string or list of strings specifying what other distributions need to be installed
     # # when this one is
     install_requires=locked_requirements("default"),
