@@ -198,10 +198,8 @@ class Message:
         return json.dumps(obj, ensure_ascii=False).encode(encoding)
 
     def _json_decode(self, json_bytes, encoding):
-        tiow = io.TextIOWrapper(io.BytesIO(json_bytes), encoding=encoding, newline="")
-        obj = json.load(tiow)
-        tiow.close()
-        return obj
+        print(json_bytes, encoding, type(json_bytes))
+        return json.loads(json_bytes.decode(encoding))
 
     def _create_message(self, *, content_bytes, content_type, content_encoding):
         jsonheader = {

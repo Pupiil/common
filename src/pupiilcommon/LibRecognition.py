@@ -97,9 +97,14 @@ class Message:
                 while True:
                     # grab the frame from the threaded video stream and resize it
                     # to 500px (to speedup processing)
-                    frame = imutils.resize(vs.read(), width=500)
+                    frame = imutils.resize(vs.read(), width=5)
 
-                    sent = self.sock.send(pickle.dumps(frame))
+                    json_string = json.dumps({"data": frame.tolist()})
+
+                    with open("json_data.json", "w") as outfile:
+                        json.dump(json_string, outfile)
+
+                    sent = self.sock.send(json_string.encode("utf-8"))
             except BlockingIOError:
                 # Resource temporarily unavailable (errno EWOULDBLOCK)
                 pass
