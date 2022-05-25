@@ -12,6 +12,7 @@ import pickle
 import cv2
 import os
 
+
 def encode():
 
     config = {
@@ -31,7 +32,11 @@ def encode():
     # loop over the image paths
     for (i, imagePath) in enumerate(imagePaths):
         # extract the person name from the image path
-        print("[RECOGNITION::ENCODE_FACES::INFO] processing image {}/{}".format(i + 1, len(imagePaths)))
+        print(
+            "[RECOGNITION::ENCODE_FACES::INFO] processing image {}/{}".format(
+                i + 1, len(imagePaths)
+            )
+        )
         name = imagePath.split(os.path.sep)[-2]
 
         # load the input image and convert it from RGB (OpenCV ordering)
@@ -59,5 +64,6 @@ def encode():
     f = open(config["encodings"], "wb")
     f.write(pickle.dumps(data))
     f.close()
+
 
 encode()

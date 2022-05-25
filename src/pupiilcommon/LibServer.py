@@ -37,8 +37,14 @@ class Message:
         self._registered_addresses = []
         self._cert_gen_random_data = self._get_cert_gen_csv_data()
         self._certificate_aux = cert.Certificate(self._get_key_response_from_ckms())
-        self.detector = cv2.CascadeClassifier(f"{pathlib.Path(__file__).parent.absolute()}/data/HaarCascade.xml")
-        self.encodings = pickle.loads(open(f"{pathlib.Path(__file__).parent.absolute()}/data/PREncodings.pkl", "rb").read())
+        self.detector = cv2.CascadeClassifier(
+            f"{pathlib.Path(__file__).parent.absolute()}/data/HaarCascade.xml"
+        )
+        self.encodings = pickle.loads(
+            open(
+                f"{pathlib.Path(__file__).parent.absolute()}/data/PREncodings.pkl", "rb"
+            ).read()
+        )
 
     def _get_key_response_from_ckms(self) -> dict:
 
@@ -117,7 +123,9 @@ class Message:
 
         csv_data = dict(email_address=[], common_name=[], country_name=[])
 
-        with open(f"{pathlib.Path(__file__).parent.absolute()}/data/CertGenData.csv") as csv_file:
+        with open(
+            f"{pathlib.Path(__file__).parent.absolute()}/data/CertGenData.csv"
+        ) as csv_file:
 
             csv_reader = csv.reader(csv_file, delimiter=",")
             line_count = 0
@@ -125,7 +133,9 @@ class Message:
             for row in csv_reader:
 
                 if line_count == 0:
-                    print(f'[LIBSERVER::MESSAGE::_GET_CERT_GEN_CSV_DATA] Column names are {", ".join(row)}')
+                    print(
+                        f'[LIBSERVER::MESSAGE::_GET_CERT_GEN_CSV_DATA] Column names are {", ".join(row)}'
+                    )
                 else:
                     csv_data["email_address"].append(row[0])
                     csv_data["common_name"].append(row[1])
@@ -133,7 +143,9 @@ class Message:
 
                 line_count += 1
 
-            print(f"[LIBSERVER::MESSAGE::_GET_CERT_GEN_CSV_DATA] Processed {line_count} lines.")
+            print(
+                f"[LIBSERVER::MESSAGE::_GET_CERT_GEN_CSV_DATA] Processed {line_count} lines."
+            )
 
         return csv_data
 
@@ -164,7 +176,12 @@ class Message:
 
     def _write(self):
         if self._send_buffer:
-            print("[LIBSERVER::MESSAGE::_WRITE] Sending", repr(self._send_buffer), "to", self.addr)
+            print(
+                "[LIBSERVER::MESSAGE::_WRITE] Sending",
+                repr(self._send_buffer),
+                "to",
+                self.addr,
+            )
             try:
                 # Should be ready to write
                 sent = self.sock.send(self._send_buffer)
@@ -360,7 +377,9 @@ class Message:
         if self.jsonheader["content-type"] == "text/json":
             encoding = self.jsonheader["content-encoding"]
             self.request = self._json_decode(data, encoding)
-            print("[LIB_SERVER] Received request", repr(self.request), "from", self.addr)
+            print(
+                "[LIB_SERVER] Received request", repr(self.request), "from", self.addr
+            )
         else:
             # Binary or unknown content-type
             self.request = data

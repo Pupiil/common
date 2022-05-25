@@ -31,7 +31,7 @@ class Message:
 
         keys = {}
 
-        with socket.socket(socket.AF_IN ET, socket.SOCK_STREAM) as ckms_socket:
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as ckms_socket:
             ckms_socket.connect((HOST, PORT))
             ckms_socket.sendall(
                 f"Connection from {self.addr}:{self.sock}".encode("utf-8")
@@ -70,12 +70,19 @@ class Message:
 
             # load the known faces and embeddings along with OpenCV's Haar
             # cascade for face detection
-            print("[RECOGNITION::RECOGNITION::INFO] loading encodings + face detector...")
+            print(
+                "[RECOGNITION::RECOGNITION::INFO] loading encodings + face detector..."
+            )
 
             # initialize the video stream and allow the camera sensor to warm up
             print("[RECOGNITION::RECOGNITION::INFO] starting video stream...")
 
-            print("[LIBCLIENT::MESSAGE::_WRITE] Sending", repr(self._send_buffer), "to", self.addr)
+            print(
+                "[LIBCLIENT::MESSAGE::_WRITE] Sending",
+                repr(self._send_buffer),
+                "to",
+                self.addr,
+            )
             try:
                 # Should be ready to write
                 vs = imutils.VideoStream(src=1).start()
@@ -86,7 +93,7 @@ class Message:
 
                 while True:
                     # grab the frame from the threaded video stream and resize it
-                    # to 500px (to speedup processing)                    
+                    # to 500px (to speedup processing)
                     sent = self.sock.send(imutils.resize(vs.read(), width=990))
             except BlockingIOError:
                 # Resource temporarily unavailable (errno EWOULDBLOCK)
@@ -118,11 +125,15 @@ class Message:
     def _process_response_json_content(self):
         content = self.response
         result = content.get("result")
-        print(f"[LIBCLIENT::MESSAGE::_PROCESS_RESPONSE_BINARY_CONTENT] Got result: {result}")
+        print(
+            f"[LIBCLIENT::MESSAGE::_PROCESS_RESPONSE_BINARY_CONTENT] Got result: {result}"
+        )
 
     def _process_response_binary_content(self):
         content = self.response
-        print(f"[LIBCLIENT::MESSAGE::_PROCESS_RESPONSE_BINARY_CONTENT] Got response: {repr(content)}")
+        print(
+            f"[LIBCLIENT::MESSAGE::_PROCESS_RESPONSE_BINARY_CONTENT] Got response: {repr(content)}"
+        )
 
     def process_events(self, mask):
         if mask & selectors.EVENT_READ:
@@ -227,7 +238,12 @@ class Message:
             self.response = self._json_decode(
                 self._certificate.decrypt_with_fernet(data), encoding
             )
-            print("[LIBCLIENT::MESSAGE::PROCESS_RESPONSE] Received response", repr(self.response), "from", self.addr)
+            print(
+                "[LIBCLIENT::MESSAGE::PROCESS_RESPONSE] Received response",
+                repr(self.response),
+                "from",
+                self.addr,
+            )
             self._process_response_json_content()
         else:
             # Binary or unknown content-type

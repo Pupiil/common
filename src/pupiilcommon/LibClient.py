@@ -67,7 +67,12 @@ class Message:
 
     def _write(self):
         if self._send_buffer:
-            print("[LIBCLIENT::MESSAGE::_WRITE] Sending", repr(self._send_buffer), "to", self.addr)
+            print(
+                "[LIBCLIENT::MESSAGE::_WRITE] Sending",
+                repr(self._send_buffer),
+                "to",
+                self.addr,
+            )
             try:
                 # Should be ready to write
                 sent = self.sock.send(self._send_buffer)
@@ -101,11 +106,15 @@ class Message:
     def _process_response_json_content(self):
         content = self.response
         result = content.get("result")
-        print(f"[LIBCLIENT::MESSAGE::_PROCESS_RESPONSE_BINARY_CONTENT] Got result: {result}")
+        print(
+            f"[LIBCLIENT::MESSAGE::_PROCESS_RESPONSE_BINARY_CONTENT] Got result: {result}"
+        )
 
     def _process_response_binary_content(self):
         content = self.response
-        print(f"[LIBCLIENT::MESSAGE::_PROCESS_RESPONSE_BINARY_CONTENT] Got response: {repr(content)}")
+        print(
+            f"[LIBCLIENT::MESSAGE::_PROCESS_RESPONSE_BINARY_CONTENT] Got response: {repr(content)}"
+        )
 
     def process_events(self, mask):
         if mask & selectors.EVENT_READ:
@@ -210,7 +219,12 @@ class Message:
             self.response = self._json_decode(
                 self._certificate.decrypt_with_fernet(data), encoding
             )
-            print("[LIBCLIENT::MESSAGE::PROCESS_RESPONSE] Received response", repr(self.response), "from", self.addr)
+            print(
+                "[LIBCLIENT::MESSAGE::PROCESS_RESPONSE] Received response",
+                repr(self.response),
+                "from",
+                self.addr,
+            )
             self._process_response_json_content()
         else:
             # Binary or unknown content-type
