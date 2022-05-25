@@ -12,6 +12,8 @@ from . import LibServer  # noqa: F401
 
 from . import LibRecognition  # noqa: F401
 
+from . import LibRecvFrame  # noqa: F401
+
 from . import MacAuxClass  # noqa: F401
 
 from . import EncodeFaces  # noqa: F401
