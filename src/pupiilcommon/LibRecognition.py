@@ -85,11 +85,11 @@ class Message:
             )
             try:
                 # Should be ready to write
-                vs = imutils.VideoStream(src=1).start()
+                vs = imutils.video.VideoStream(src=1).start()
 
                 time.sleep(2.0)
 
-                imutils.FPS().start()
+                imutils.video.FPS().start()
 
                 while True:
                     # grab the frame from the threaded video stream and resize it
