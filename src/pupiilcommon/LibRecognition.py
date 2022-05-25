@@ -4,6 +4,7 @@ import selectors
 import imutils
 import socket
 import struct
+import pickle
 import time
 import json
 import sys
@@ -96,7 +97,9 @@ class Message:
                 while True:
                     # grab the frame from the threaded video stream and resize it
                     # to 500px (to speedup processing)
-                    sent = self.sock.send(imutils.resize(vs.read(), width=990))
+                    frame = imutils.resize(vs.read(), width=500)
+
+                    sent = self.sock.send(pickle.dumps(frame))
             except BlockingIOError:
                 # Resource temporarily unavailable (errno EWOULDBLOCK)
                 pass

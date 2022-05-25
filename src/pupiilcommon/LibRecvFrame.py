@@ -235,10 +235,10 @@ class Message:
 
             content = {}
 
-            if addr != "127.0.0.1":
+            if not addr.startswith("127"):
                 content = {"result": "invalid IP"}
             else:
-                PATH = f"{pathlib.Path(__file__).parent.absolute()}/certs/{addr_mac}-{self.addr[0]}-{port}"
+                PATH = f"certs/{addr_mac}-{self.addr[0]}-{port}"
 
                 os.makedirs(PATH)
 
