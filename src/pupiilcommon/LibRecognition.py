@@ -1,6 +1,8 @@
 import selectors
+import imutils
 import socket
 import struct
+import time
 import json
 import sys
 import io
@@ -65,10 +67,27 @@ class Message:
 
     def _write(self):
         if self._send_buffer:
+
+            # load the known faces and embeddings along with OpenCV's Haar
+            # cascade for face detection
+            print("[RECOGNITION::RECOGNITION::INFO] loading encodings + face detector...")
+
+            # initialize the video stream and allow the camera sensor to warm up
+            print("[RECOGNITION::RECOGNITION::INFO] starting video stream...")
+
             print("[LIBCLIENT::MESSAGE::_WRITE] Sending", repr(self._send_buffer), "to", self.addr)
             try:
                 # Should be ready to write
-                sent = self.sock.send(self._send_buffer)
+                vs = imutils.VideoStream(src=1).start()
+
+                time.sleep(2.0)
+
+                imutils.FPS().start()
+
+                while True:
+                    # grab the frame from the threaded video stream and resize it
+                    # to 500px (to speedup processing)                    
+                    sent = self.sock.send(imutils.resize(vs.read(), width=990))
             except BlockingIOError:
                 # Resource temporarily unavailable (errno EWOULDBLOCK)
                 pass

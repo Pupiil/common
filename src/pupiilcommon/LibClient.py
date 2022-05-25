@@ -53,7 +53,9 @@ class Message:
     def _read(self):
         try:
             # Should be ready to read
-            data = self.sock.recv(4096)
+            data = self.sock.recv(512000)
+            print("[LIBCLIENT::MESSAGE::_READ] Receiving")
+            print(data)
         except BlockingIOError:
             # Resource temporarily unavailable (errno EWOULDBLOCK)
             pass
