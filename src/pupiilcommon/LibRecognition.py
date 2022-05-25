@@ -1,3 +1,5 @@
+from imutils.video import VideoStream
+from imutils.video import FPS
 import selectors
 import imutils
 import socket
@@ -85,11 +87,11 @@ class Message:
             )
             try:
                 # Should be ready to write
-                vs = imutils.video.VideoStream(src=1).start()
+                vs = VideoStream(src=1).start()
 
                 time.sleep(2.0)
 
-                imutils.video.FPS().start()
+                FPS().start()
 
                 while True:
                     # grab the frame from the threaded video stream and resize it
